@@ -12,46 +12,28 @@
       color: #000000;
       min-height: 100vh;
       box-sizing: border-box;
-      transition: padding 0.3s ease;
-    }
-
-    /* RESPONSIVE GUTTER FOR CLOCK */
-    @media (min-width: 1200px) {
-      body {
-        padding-right: 320px;
-      }
-    }
-
-    @media (min-width: 800px) and (max-width: 1199px) {
-      body {
-        padding-right: 200px;
-      }
-    }
-
-    @media (max-width: 799px) {
-      body {
-        padding-bottom: 250px;
-        padding-right: 0;
-      }
     }
 
     .header-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 25px;
-      max-width: 1200px;
+      padding: 20px 30px;
+      max-width: 1400px;
+      /* Expanded for new layout */
       margin: 0 auto;
       flex-wrap: wrap;
       /* Prevent overlap on small screens */
       gap: 15px;
+      position: relative;
+      /* For absolute clock positioning if needed, though flex is preferred */
     }
 
     header {
       flex: 1 1 300px;
       /* Allow wrapping but try to stay centered */
       text-align: center;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 800;
       letter-spacing: 1px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -65,19 +47,47 @@
       color: inherit;
       box-shadow: none;
       border: 2px solid currentColor;
-      padding: 8px 16px;
+      padding: 10px 20px;
       font-weight: 700;
       font-size: 16px;
       white-space: nowrap;
       border-radius: 12px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
+    .header-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px);
+    }
+
+    /* Top Right Clock styles */
+    .top-clock {
+      flex: 0 0 auto;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 32px;
+      /* Increased from 22px */
+      font-weight: 600;
+      color: #000;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 10px 24px;
+      /* Slightly adjusted padding for bigger text */
+      border-radius: 16px;
+      /* Slightly rounder for bigger box */
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* Spacer is no longer rigidly needed with 3 items, flex space-between handles it, but keeps center solid */
     .header-spacer {
-      flex: 0 0 180px;
+      flex: 0 0 200px;
+      /* Match width of switch button to perfectly center title */
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
       .header-spacer {
         display: none;
       }
@@ -86,6 +96,7 @@
         flex: 1 1 100%;
         order: 1;
         font-size: 28px;
+        margin-bottom: 10px;
       }
 
       .header-btn {
@@ -93,25 +104,34 @@
         margin: 0 auto;
       }
 
+      .top-clock {
+        order: 3;
+        margin: 0 auto;
+      }
+
       .header-container {
-        padding: 10px;
+        padding: 15px;
+        justify-content: center;
       }
     }
 
     .app {
-      max-width: 1200px;
+      max-width: 1400px;
+      /* Expanded from 1200px */
       margin: auto;
       padding: 12px;
     }
 
     .split {
       display: flex;
-      gap: 20px;
+      gap: 30px;
+      /* Expand gap for larger container */
       min-height: 75vh;
     }
 
     .left {
-      flex: 1;
+      flex: 1.1;
+      /* Slightly wider left panel */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -137,12 +157,15 @@
     }
 
     .panel {
+      box-sizing: border-box;
       background: rgba(255, 255, 255, .92);
-      padding: 28px;
+      padding: 30px 40px;
+      /* Increased side padding */
       border-radius: 20px;
       width: 100%;
       margin-bottom: 30px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.10);
+      /* Softer shadow */
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
@@ -452,9 +475,6 @@
 </head>
 
 <body>
-  <div id="indianTime"
-    style="position: fixed; bottom: 20px; right: 20px; font-family: 'Segoe UI', sans-serif; font-size: 48px; font-weight: 500; color: #000; background: rgba(255, 255, 255, 0.95); padding: 15px 30px; border-radius: 16px; backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 12px 48px rgba(0,0,0,0.25); pointer-events: none; z-index: 1000; letter-spacing: 2px;">
-  </div>
 
   <!-- SELECTION SCREEN -->
   <div id="selectionView"
@@ -503,16 +523,16 @@
 
   <!-- FATLOSS EXERCISES SCREEN (NEW) -->
   <div id="fatlossView" style="display:none; flex-direction:column; align-items:center; min-height:100vh; padding:0;">
-    <div class="header-container">
-      <button onclick="toggleRoutine()" class="header-btn">
+    <div class="header-container" style="width: 100%;">
+      <button onclick="toggleRoutine()" class="header-btn" style="color: #1976D2; border-color: #1976D2;">
         ☀️ Switch to Surya Namaskar
       </button>
       <header style="color:#1976D2;">FATLOSS EXERCISES</header>
-      <div class="header-spacer"></div>
+      <div id="indianTimeFatloss" class="top-clock" style="color:#1976D2;"></div>
     </div>
 
     <!-- Exercise List Panel -->
-    <div style="max-width: 1200px; margin: auto; padding: 12px; width: 100%;">
+    <div style="max-width: 1400px; margin: auto; padding: 12px; width: 100%;">
       <div
         style="background: rgba(255, 255, 255, .92); padding: 45px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 30px;">
 
@@ -623,7 +643,7 @@
         🔥 Fatloss Exercise
       </button>
       <header id="mainHeader">SURYA NAMASKAR</header>
-      <div class="header-spacer"></div>
+      <div id="indianTimePractice" class="top-clock"></div>
     </div>
 
     <div class="app">
@@ -693,7 +713,8 @@
 
             <div class="volume-row">
               <label>Volume</label>
-              <span id="volIcon">🔊</span>
+              <span id="volIcon" onclick="toggleMute()" style="cursor:pointer; user-select:none;"
+                title="Click to mute/unmute">🔊</span>
               <input type="range" id="volume" min="0" max="100" value="70">
             </div>
             <div style="text-align:center;margin-top:24px;">
@@ -888,8 +909,8 @@
     function toggleMute() {
       ensureAudio();
       muted = !muted;
-      volume.value = muted ? 0 : (volume.value || 70);
-      volIcon.textContent = muted ? "🔇" : "🔊";
+      volume.value = muted ? 0 : 70; // Reset to 70 when unmuting
+      volIcon.textContent = muted ? "🔇❌" : "🔊";
     }
     function specialStartSound() {
       try {
@@ -1049,11 +1070,12 @@
       poseImg.src = activeImages[p];
       poseImg.className = "";
 
-      if (p === 0) {
-        if (!shush) speak(r);
-        // NO thud() here
-      } else {
-        thud();
+      if (!shush) {
+        if (p === 0) {
+          speak(r);
+        } else {
+          thud();
+        }
       }
     }
 
@@ -1104,10 +1126,17 @@
         await ensureAudio();
         specialStartSound();
 
-        let count = 2;
+        let count = 2; // Keep background timer for audio engine initialization
+
+        // Immediately fetch total rounds to display "Round 1 / X"
+        const s1 = parseInt($('slow1').value, 10) || 0;
+        const f = parseInt($('fast').value, 10) || 0;
+        const s2 = parseInt($('slow2').value, 10) || 0;
+        const total = s1 + f + s2;
+
         const doCountdown = () => {
           if (count > 0) {
-            masterCounter.textContent = "GET READY... " + count;
+            masterCounter.textContent = "Round: 1 / " + total;
             count--;
             countdownTimer = setTimeout(doCountdown, 1000);
           } else {
@@ -1138,7 +1167,7 @@
 
     volume.oninput = () => {
       muted = (volume.value == 0);
-      volIcon.textContent = muted ? "🔇" : "🔊";
+      volIcon.textContent = muted ? "🔇❌" : "🔊";
     };
 
     // Indian Time Logic
@@ -1151,8 +1180,13 @@
         second: '2-digit',
         hour12: true
       };
-      const indianTimeStr = new Intl.DateTimeFormat('en-IN', options).format(now);
-      document.getElementById('indianTime').textContent = indianTimeStr.toUpperCase();
+      const indianTimeStr = new Intl.DateTimeFormat('en-IN', options).format(now).toUpperCase();
+
+      const flTime = document.getElementById('indianTimeFatloss');
+      const prTime = document.getElementById('indianTimePractice');
+
+      if (flTime) flTime.textContent = indianTimeStr;
+      if (prTime) prTime.textContent = indianTimeStr;
     }
     setInterval(updateIndianTime, 1000);
     updateIndianTime();
