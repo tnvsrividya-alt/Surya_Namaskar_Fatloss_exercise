@@ -854,18 +854,22 @@
         if (muted || volume.value == 0) return;
         ensureAudio();
         const now = audioCtx.currentTime;
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-        notes.forEach((freq, i) => {
+        // Simple "Ta-Da" - G5 then C6
+        const notes = [
+          { f: 783.99, t: 0 },   // G5
+          { f: 1046.50, t: 0.15 } // C6
+        ];
+        notes.forEach((note) => {
           const o = audioCtx.createOscillator();
           const g = audioCtx.createGain();
           o.type = "sine";
-          o.frequency.value = freq;
-          g.gain.setValueAtTime(0, now + i * 0.1);
-          g.gain.linearRampToValueAtTime(0.2 * (volume.value / 100), now + i * 0.1 + 0.05);
-          g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+          o.frequency.value = note.f;
+          g.gain.setValueAtTime(0, now + note.t);
+          g.gain.linearRampToValueAtTime(0.3 * (volume.value / 100), now + note.t + 0.05);
+          g.gain.exponentialRampToValueAtTime(0.001, now + note.t + 0.4);
           o.connect(g); g.connect(audioCtx.destination);
-          o.start(now + i * 0.1);
-          o.stop(now + i * 0.1 + 0.4);
+          o.start(now + note.t);
+          o.stop(now + note.t + 0.5);
         });
       } catch (e) { }
     }
@@ -904,6 +908,12 @@
       pSlow2.innerHTML = "<b>" + fmt(s2 * 12 * st2) + "</b>";
 
       totalRounds.textContent = (s1 + f + s2);
+      let tr = (s1 + f + s2);
+
+      // Disable buttons if zero rounds
+      startBtn.disabled = (tr === 0);
+      stopBtn.disabled = (tr === 0);
+
       totalSec = (s1 * 12 * st1) + (f * 12 * ft) + (s2 * 12 * st2);
       timeDisplay.textContent = "Remaining: " + fmt(totalSec) + " | Total: " + fmt(totalSec);
     }
