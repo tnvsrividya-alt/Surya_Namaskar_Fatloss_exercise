@@ -11,8 +11,8 @@
       background: linear-gradient(135deg, #e8f5e9 0%, #c5e1a5 100%);
       color: #000000;
       min-height: 100vh;
-      padding-bottom: 150px;
-      /* Space for the larger fixed clock */
+      padding-bottom: 120px;
+      /* Increased space for the larger fixed clock */
     }
 
     header {
@@ -67,6 +67,8 @@
       padding: 28px;
       border-radius: 20px;
       width: 100%;
+      margin-bottom: 150px;
+      /* Prevent overlap with fixed clock */
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -331,6 +333,11 @@
       margin-bottom: 4px;
       text-align: center;
       width: auto;
+      min-height: 40px;
+      /* Prevents jumping on transitions */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .breath {
@@ -342,6 +349,11 @@
       text-align: center;
       /* Centered */
       width: auto;
+      min-height: 25px;
+      /* Prevents jumping on transitions */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .time {
@@ -369,7 +381,7 @@
 
 <body>
   <div id="indianTime"
-    style="position: fixed; bottom: 30px; right: 30px; font-family: 'Segoe UI', sans-serif; font-size: 48px; font-weight: 500; color: #000; background: rgba(255, 255, 255, 0.7); padding: 15px 30px; border-radius: 16px; backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 8px 32px rgba(0,0,0,0.15); pointer-events: none; z-index: 1000; letter-spacing: 2px;">
+    style="position: fixed; bottom: 30px; right: 30px; font-family: 'Segoe UI', sans-serif; font-size: 48px; font-weight: 500; color: #000; background: rgba(255, 255, 255, 0.85); padding: 15px 30px; border-radius: 16px; backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 12px 48px rgba(0,0,0,0.25); pointer-events: none; z-index: 1000; letter-spacing: 2px;">
   </div>
 
   <!-- SELECTION SCREEN -->
@@ -432,7 +444,7 @@
     <!-- Exercise List Panel -->
     <div style="max-width: 1200px; margin: auto; padding: 12px; width: 100%;">
       <div
-        style="background: rgba(255, 255, 255, .92); padding: 45px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+        style="background: rgba(255, 255, 255, .92); padding: 45px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 150px;">
 
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px;">
